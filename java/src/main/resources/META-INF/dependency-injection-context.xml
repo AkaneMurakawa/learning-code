@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- 通过导入复用 -->
+    <import resource="dependency-lookup-context.xml"/>
+
+    <!-- 硬编码 手动配置 -->
+    <!--<bean id="userRepository" class="spring.ioc.dependency.repository.UserRepository">-->
+        <!--<property name="users">-->
+            <!--<util:list>-->
+                <!--<ref bean="user" />-->
+                <!--<ref bean="superUser" />-->
+            <!--</util:list>-->
+        <!--</property>-->
+    <!--</bean>-->
+
+    <!-- Auto-Wiring自动注入 -->
+    <bean id="userRepository" class="spring.ioc.dependency.repository.UserRepository" autowire="byType">
+
+    </bean>
+</beans>

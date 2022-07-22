@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:cache="http://www.springframework.org/schema/cache"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/cache
+        http://www.springframework.org/schema/cache/spring-cache.xsd
+        http://www.springframework.org/schema/data/mongo
+        http://www.springframework.org/schema/data/mongo/spring-mongo.xsd
+        http://www.springframework.org/schema/task
+        http://www.springframework.org/schema/task/spring-task.xsd
+        http://code.alibabatech.com/schema/dubbo
+        http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+	<!-- import xml
+		<import resource=""/>
+	-->
+
+	<!-- 1. 配置扫描器，自动扫描包，扫描除了@Controller注解外的 -->
+	<context:component-scan base-package="spring">
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+	</context:component-scan>
+
+	<!-- 2.加载数据库的.property文件 -->
+	<bean id="config" class="org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:load.properties</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- ===================================DataSource======================================================================== -->
+	<!-- 3. 配置数据源 -->
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="driverClass" value="${jdbc.driver}"></property>
+		<property name="jdbcUrl" value="${jdbc.url}"></property>
+		<property name="user" value="${jdbc.username}"></property>
+		<property name="password" value="${jdbc.password}"></property>
+	</bean>
+
+	<!-- ============================Configuration and integration Mybatis=================================================== -->
+	<!-- 4.注册SqlSessionFactoryBean -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<!-- 4.1 指定mybatis全局配置文件的位置 -->
+		<property name="configLocation" value="classpath:mybatis-config.xml"/>
+		<!-- 4.2 连接池注入 -->
+		<property name="dataSource" ref="dataSource"/>
+		<!-- 4.3 指定mapper文件的位置 -->
+		<property name="mapperLocations" value="classpath:com/hanaeyuuma/freeblogs/mapping/*.xml"/><!-- Entity -->
+		<!--<property name="typeAliasesPackage" value="com.hanaeyuuma.freeblogs.model"/>Entity -->
+		<!-- transactionFactory -->
+		<!--  property name="transactionFactory">
+			<bean class="org.apache.ibatis.transaction.managed.ManagedTransactionFactory" />
+		</property-->
+		<!--  transactionFactoryClass
+		<property name="configuration">
+			<bean class="org.apache.ibatis.session.Configuration">
+				<property name="mapUnderscoreToCamelCase" value="true"/>
+			</bean>
+		</property>
+		 -->
+	</bean>
+	<!-- 5. 配置扫描器，扫描所有的DAO接口，加入到IOC容器中  -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.hanaeyuuma.freeblogs.dao"></property>
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
+	</bean>
+	<!-- 批量执行的SqlSession -->
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory"/>
+		<constructor-arg name="executorType" value="BATCH"/>
+	</bean>
+
+	<!-- ==================================transactionManager================================================================== -->
+
+	<!-- 6. 配置事务管理器 -->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<!-- 7. 使用xml配置打开基于注解的事务 -->
+    <aop:config>
+    	<!-- execution
+    	 * : return type
+    	 .. : Include subpackages
+    	 * : all class
+    	 (..) : Arbitrary parameters
+    	-->
+    	<!-- aop expression -->
+        <aop:pointcut id="txPoint" expression="execution(* spring.suzuki.service..*(..))" />
+        <!-- aop Transaction enhancement -->
+        <aop:advisor pointcut-ref="txPoint" advice-ref="txAdvice" />
+    </aop:config>
+	<!-- 8. aaop事务加强，如何切入 -->
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+  			<!-- 所有方法都是事务方法 -->
+            <tx:method name="*" isolation="DEFAULT" propagation="REQUIRED"/>
+            <!-- get查询方法为只读，优化查询效率 -->
+            <tx:method name="get*" read-only="true"/>
+        </tx:attributes>
+    </tx:advice>
+
+    <!--  9. 文件上传 -->
+   	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!-- 最大的上传大小，单位为字节，设置上传最大尺寸为：10MB -->
+        <property name="maxUploadSize" value="10485760" /><!-- 10 * 1024 * 1024 -->
+        <property name="maxInMemorySize" value="4096" /><!-- 上传文件的缓存大小，单位未字节 -->
+        <property name="defaultEncoding" value="UTF-8"/>
+    </bean>
+
+    <!-- 10.定时器 -->
+    <bean id="SaveDatabaseTask" class="spring.suzuki.task.SaveDatabaseTask"></bean>
+    <!-- 配置jobDetail -->
+    <bean id="saveDatabaseDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+    	<property name="targetObject">
+    		<ref bean="SaveDatabaseTask"/>
+    	</property>
+   		<property name="targetMethod">
+    		<value>SaveDatabase</value>
+    	</property>
+    </bean>
+    <!-- 配置触发器 -->
+    <bean id="saveDatabaseTriggers" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+    	<property name="jobDetail">
+    		<ref bean="saveDatabaseDetail" />
+    	</property>
+    	<!-- 配置Cron表达式 -->
+    	<property name="cronExpression">
+    		<!-- 每天的凌晨3点完整备份数据库 -->
+    		<value>0 0 3 * * ?</value>
+    	</property>
+    </bean>
+    <!-- 配置调度工厂 -->
+    <!-- 定时器执行， 完整备份数据库 -->
+    <bean id="SaveDatabase" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+    	<property name="triggers">
+    		<list>
+    			<!-- 定时器 -->
+    			<ref bean="saveDatabaseTriggers"/>
+    		</list>
+    	</property>
+    </bean>
+</beans>
+

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>在线笔记</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+    <link rel="stylesheet" href="/static/css/common.css">
+</head>
+<body>
+    <div id="app">
+        <!-- 模态框（Modal） -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            &times;
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel">
+                            新建笔记
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <input v-model="note.title" type="text" class="form-control" placeholder="title" required>
+                        </div>
+                        <div class="form-group">
+                            <input v-model="note.create_time" maxlength="19" type="text" class="form-control" placeholder="create_time" required>
+                        </div>
+                        <div class="form-group">
+                            <textarea v-model="note.content" type="text" class="form-control" placeholder="content" required></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                        </button>
+                        <button type="button" class="btn btn-primary" @click="add()">
+                            保存
+                        </button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal -->
+        </div>
+
+        <div>
+            <a href="/" style="text-decoration: none"><h2>📚在线笔记</h2></a>
+        </div>
+
+        <div class="operator">
+            <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">添加</button>
+        </div>
+        <table class="table table-bordered table-hover" style="word-break:break-all; word-wrap:break-all;">
+                <thead>
+                    <tr>
+                        <th>标题</th>
+                        <th>内容</th>
+                        <th>创建时间</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(item, index) in noteList">
+                        <td>
+                            <a target="_blank">
+                                {{item.title}}
+                            </a>
+                        </td>
+                        <td>{{item.content}}</td>
+                        <td>{{item.create_time}}</td>
+                        <td>
+                            <a href="javascript:;" @click="deleteNote(index)"><i class="fa fa-trash-o fa-fw"></i> delete</a>
+                            <a href="javascript:;" @click="detail(index)"><i class="fa fa-book"></i> detail</a>
+                        </td>
+                    </tr>
+                </tbody>
+        </table>
+    </div>
+
+    <script src="/static/js/jquery.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+    <script src="/static/js/vue.js"></script>
+    <script src="/static/js/common.js"></script>
+</body>
+</html>

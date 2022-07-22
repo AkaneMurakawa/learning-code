@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="user" class="spring.ioc.dependency.domain.User">
+        <!-- collaborators and configuration for this bean go here -->
+        <!-- setter getter 注入 -->
+        <property name="name" value="AkaneMurakawa"/>
+        <property name="bio" value="Spring IoC dependency lookup"/>
+    </bean>
+
+    <!-- primary 优先查找 -->
+    <bean id="superUser" class="spring.ioc.dependency.domain.SuperUser" parent="user" primary="true">
+        <!-- collaborators and configuration for this bean go here -->
+        <!-- setter getter 注入 -->
+        <property name="name" value="superUser"/>
+        <property name="bio" value="Spring IoC dependency lookup"/>
+        <property name="address" value="Spring IoC dependency lookup"/>
+    </bean>
+
+    <!-- more bean definitions go here -->
+    <bean id="objectFactory" class="org.springframework.beans.factory.config.ObjectFactoryCreatingFactoryBean">
+        <!-- 延迟加载 -->
+        <property name="targetBeanName" value="user"/>
+    </bean>
+</beans>

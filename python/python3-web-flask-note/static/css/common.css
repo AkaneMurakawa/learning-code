@@ -1,0 +1,22 @@
+.index{
+    text-align: center;
+    padding-top: 10%;
+}
+
+#app{
+    padding: 5% 10%;
+}
+a {
+    text-decoration: none
+}
+a:hover {
+    text-decoration: none
+}
+.operator{
+    margin-top: 2%;
+    margin-bottom: 2%;
+}
+
+.note-header{
+    text-align: center;
+}

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Jinja2</title>
+        <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+        <style>
+            body{
+                font-size: 16px;
+            }
+            a, a:link, a:visited a:hover{
+                text-decoration: none;
+            }
+            .form-group{
+                padding: 20px 0;
+            }
+            .form-control{
+                box-shadow: none;
+                border-color: #d2d6de;
+                display:inline;
+                width: 30%;
+                padding: 2px 12px;
+                margin-right: 50px;
+                margin-left: 10px;
+            }
+            th{
+                font-weight: lighter;
+            }
+            td{
+                min-width: 100px;
+                max-width: 600px;
+            }
+            #app{
+                padding: 0 10%;;
+            }
+        </style>
+    </head>
+<body>
+    <nav class="navbar navbar-expand-sm navbar-dark" style="background-color: #468eff;">
+        <a class="navbar-brand" href="#">Jinja2</a>
+    </nav>
+
+    <div class="container-fluid" id="app">
+        <div class="row">
+            <div class="col-md-12">
+                <form>
+                    <div class="form-group">
+                      <label>所属环境</label>
+                      <select class="form-control" id="env">
+                            <option value="">全部</option>
+                            <option value="T" selected="selected">测试</option>
+                            <option value="P"> 生产</option>
+                      </select>
+                      <input type="button" class="btn btn-primary btn-sm" style="background-color: #468eff;" @click="search()" value="查询">
+                    </div>
+                  </form>
+            </div>
+
+            <div class="col-md-12">
+                <table class="table table-bordered table-hover" style="word-break:break-all; word-wrap:break-all;">
+                    <thead>
+                        <tr>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                    </table>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p style="text-align: center; color: #468eff;">
+            分页是不可能分页的
+        </p>
+    </footer>
+    <script src="https://cdn.bootcss.com/jquery/3.5.0/jquery.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+</body>
+</html>

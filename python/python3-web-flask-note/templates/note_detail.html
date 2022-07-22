@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>在线笔记</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+    <link rel="stylesheet" href="/static/css/common.css">
+</head>
+<body>
+    <div id="app">
+        <div>
+            <a href="/" style="text-decoration: none"><h2>📚在线笔记</h2></a>
+            <a href="/note/index" style="text-decoration: none"><span>我的笔记</span></a>
+        </div>
+
+        <div>
+            <div class="note-header">
+                <h3>{[note.title]}</h3>
+                <span>{[note.create_time]}</span>
+            </div>
+            <p>
+                <!-- 不转义，但容易被xss攻击 -->
+                {[note.content | safe]}
+            </p>
+        </div>
+    </div>
+
+    <script src="/static/js/jquery.js"></script>
+</body>
+</html>
