@@ -1,1 +1,1 @@
-# learnig-code
+# learning-code
