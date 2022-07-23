@@ -3,7 +3,7 @@ package spring.ioc.dependency.domain;
 import spring.ioc.dependency.annotation.Super;
 
 @Super
-public class SuperUser extends User{
+public class SuperUser extends User {
 
     private String address;
 

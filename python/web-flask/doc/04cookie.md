@@ -1,4 +1,4 @@
-## 一、设置cookie和删除
+## 设置cookie和删除
 ```python
 @app.route("/index")
 def index():
@@ -25,7 +25,7 @@ def index():
     return resp
 ```
 
-## 二、获取cookie
+## 获取cookie
 ```python
 @app.route("/getCookie")
 def getCookie():

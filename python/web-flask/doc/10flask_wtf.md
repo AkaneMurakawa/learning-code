@@ -1,4 +1,4 @@
-## 一、wtf
+## wtf
 ```python
 class RegisterForm(FlaskForm):
     """

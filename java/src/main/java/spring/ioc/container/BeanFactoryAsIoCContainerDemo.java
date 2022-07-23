@@ -33,7 +33,7 @@ public class BeanFactoryAsIoCContainerDemo {
      */
     private static void lookupByCollecionType(BeanFactory beanFactory) {
         if (beanFactory instanceof ListableBeanFactory) {
-            ListableBeanFactory listableBeanFactory = (ListableBeanFactory)beanFactory;
+            ListableBeanFactory listableBeanFactory = (ListableBeanFactory) beanFactory;
             Map<String, User> users = listableBeanFactory.getBeansOfType(User.class);
             System.out.println("集合类型查找:" + users);
         }

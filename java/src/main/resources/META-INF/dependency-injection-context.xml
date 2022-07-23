@@ -9,12 +9,12 @@
 
     <!-- 硬编码 手动配置 -->
     <!--<bean id="userRepository" class="spring.ioc.dependency.repository.UserRepository">-->
-        <!--<property name="users">-->
-            <!--<util:list>-->
-                <!--<ref bean="user" />-->
-                <!--<ref bean="superUser" />-->
-            <!--</util:list>-->
-        <!--</property>-->
+    <!--<property name="users">-->
+    <!--<util:list>-->
+    <!--<ref bean="user" />-->
+    <!--<ref bean="superUser" />-->
+    <!--</util:list>-->
+    <!--</property>-->
     <!--</bean>-->
 
     <!-- Auto-Wiring自动注入 -->

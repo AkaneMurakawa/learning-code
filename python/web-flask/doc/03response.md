@@ -1,4 +1,4 @@
-## 一、response
+## response
 ```python
 @app.route("/abort", methods=["GET"])
 def abort_test():
@@ -42,7 +42,7 @@ def resp():
     return resp
 ```
 
-## 二、json
+## json
 ```python
 @app.route("/json")
 def json():

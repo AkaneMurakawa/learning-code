@@ -1,5 +1,5 @@
 
-## 一、启动程序入口 —— Main
+## 启动程序入口 —— Main
 ```python
 # 第一步：初始化Flask
 app = Flask(__name__)
@@ -14,7 +14,7 @@ app = Flask(__name__)
 app.run(host="127.0.0.1", port=8080)
 ```
 
-## 二、请求路由
+## 请求路由
 * 返回json格式
 * 请求转发
 * 请求重定向
@@ -61,7 +61,7 @@ def detail(sku_id):
     return "test %s" % sku_id
 ```
 
-## 三、转换器
+## 转换器
 1.自定义转换器`util.regex_converter.RegexConverter`  
 2.将自定义的转换器添加到flask
 ```python

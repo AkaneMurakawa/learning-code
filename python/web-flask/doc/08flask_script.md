@@ -1,4 +1,4 @@
-## 一、script
+## script
 ```text
 > python flask08_script.py --help
 usage: flask08_script.py [-?] {shell,runserver} ...

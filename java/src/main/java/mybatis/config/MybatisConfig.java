@@ -9,6 +9,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.InputStream;
@@ -40,25 +41,27 @@ public class MybatisConfig {
             userName = properties.getProperty("username");
             password = properties.getProperty("password");
 
-        }catch (IOException e){}
+        } catch (IOException e) {
+        }
     }
 
     /**
      * 注入sqlSession
      * 在基础的 MyBatis 用法中，是通过 SqlSessionFactoryBuilder 来创建 SqlSessionFactory 的。
      * 而在 MyBatis-Spring 中，则使用 SqlSessionFactoryBean 来创建。
-     *
+     * <p>
      * 这意味着由 Spring 最终创建的 bean 并不是 SqlSessionFactoryBean 本身，
      * 而是工厂类（SqlSessionFactoryBean）的 getObject() 方法的返回结果。
      * 这种情况下，Spring 将会在应用启动时为你创建 SqlSessionFactory，
      * 并使用 sqlSessionFactory 这个名字存储起来。
-     *
+     * <p>
      * 需要注意的是SqlSessionFactoryBean implements FactoryBean<SqlSessionFactory>
+     *
      * @return
      * @throws Exception
      */
     @Bean
-    public SqlSessionFactory sqlSessionFactory() throws Exception{
+    public SqlSessionFactory sqlSessionFactory() throws Exception {
         SqlSessionFactoryBean factoryBean = new SqlSessionFactoryBean();
         factoryBean.setDataSource(dataSource());
         // factoryBean.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath:META-INF/mybatis/mapper/**/*Mapper.xml"));
@@ -68,10 +71,11 @@ public class MybatisConfig {
 
     /**
      * 注入连接
+     *
      * @return
      */
     @Bean
-    public DataSource dataSource(){
+    public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName(driver);
         dataSource.setUrl(url);
@@ -83,6 +87,7 @@ public class MybatisConfig {
 
     /**
      * Mybatis加入Spring事务
+     *
      * @return
      */
     @Bean
@@ -92,6 +97,7 @@ public class MybatisConfig {
 
     /**
      * 使用 SqlSession
+     *
      * @return
      * @throws Exception
      */

@@ -5,6 +5,7 @@ import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
+
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -17,7 +18,7 @@ public class ApplicationDemo {
      */
     SqlSessionFactory sqlSessionFactory;
 
-    public static void main(String[] args)throws Exception {
+    public static void main(String[] args) throws Exception {
         ApplicationDemo demo = new ApplicationDemo();
 //        demo.sqlSessionMapper();
         demo.cacheTest();
@@ -25,9 +26,10 @@ public class ApplicationDemo {
 
     /**
      * sqlSession.getMapper测试
+     *
      * @throws IOException
      */
-    public void sqlSessionMapper()throws IOException{
+    public void sqlSessionMapper() throws IOException {
         // Mybatis的Resources工具类
         InputStream inputStream = Resources.getResourceAsStream("mybatis-config.xml");
         // 获取SqlSession工厂
@@ -39,9 +41,10 @@ public class ApplicationDemo {
 
     /**
      * 二级缓存测试
+     *
      * @throws IOException
      */
-    public void cacheTest()throws IOException{
+    public void cacheTest() throws IOException {
         // Mybatis的Resources工具类
         InputStream inputStream = Resources.getResourceAsStream("mybatis-config.xml");
         // 获取SqlSession工厂

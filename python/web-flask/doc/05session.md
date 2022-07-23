@@ -1,4 +1,4 @@
-## 一、设置session
+## 设置session
 ```python
 @app.route("/setSession")
 def setSession():
@@ -11,7 +11,7 @@ def setSession():
     return "session set"
 ```
 
-## 二、获取session
+## 获取session
 ```python
 #第一步：
 # Flask中session需要用到的密钥

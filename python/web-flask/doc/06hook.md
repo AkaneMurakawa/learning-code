@@ -1,4 +1,4 @@
-## 一、请求handle —— hook
+## 请求handle —— hook
 ```python
 app.route("/index")
 def index():

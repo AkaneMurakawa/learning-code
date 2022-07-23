@@ -7,7 +7,6 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
  * Bean 实例化
- *
  */
 public class BeanInstantinationDemo {
 

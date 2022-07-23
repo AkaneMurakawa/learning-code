@@ -61,7 +61,7 @@ pip install mysqlclient‑1.4.6‑cp37‑cp37m‑win32.whl
 ## 文档和示例
 [python入门 + PythonWeb-Flask](doc/README.md)
 
-[示例程序](demo)
+[示例程序](doc/demo)
 
 ## 实战
 在线笔记系统，见`app.py`

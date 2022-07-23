@@ -1,4 +1,4 @@
-## 一、request
+## request
 ```python
     name = request.form.get("name")
     host = request.host
@@ -12,7 +12,7 @@
     files = request.files
 ```
 
-## 二、文件上传
+## 文件上传
 ```python
 @app.route("/upload", methods=["POST"])
 def upload():

@@ -1,4 +1,4 @@
-## 一、跳转到指定的界面
+## 跳转到指定的界面
 ```python
 @app.route("/index")
 def index():
@@ -8,7 +8,7 @@ def index():
     return render_template("index.html", **data)
 ```
 
-## 二、Jinja2语法
+## Jinja2语法
 ```html
 过滤器，语法
 <p>{{'test' | 函数}}</p>
@@ -21,7 +21,7 @@ def index():
 <p>{{'test' | first}}</p>
 ```
 
-## 三、自定义过滤器
+## 自定义过滤器
 方法一
 ```python
 # 第一步：
@@ -50,14 +50,14 @@ def list_step_3(li):
     return li[::3]
 ```
 
-## 四、控制语句
+## 控制语句
 ```html
 {% if %} {% endif %}
 
 {% for item in samples %}{% endfor %}
 ```
 
-## 五、宏
+## 宏
 ```html
 {% macro input() %}
     <input type="text" value="">
@@ -72,4 +72,4 @@ def list_step_3(li):
 {% m_input.input() %}
 ```
 
-## 六、flash
+## flash

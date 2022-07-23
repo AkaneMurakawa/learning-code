@@ -30,7 +30,7 @@ public class User {
                 '}';
     }
 
-    public static User createUser(){
+    public static User createUser() {
         User user = new User();
         user.setName("Akane");
         return user;

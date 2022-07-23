@@ -41,38 +41,41 @@ public class AnnotationBeanDefinitionDemo {
 
     /**
      * Bean 的注册方式
+     *
      * @param registry
      * @param beanName
      */
-    public static void registerBeanDefinition(BeanDefinitionRegistry registry, String beanName){
+    public static void registerBeanDefinition(BeanDefinitionRegistry registry, String beanName) {
         BeanDefinitionBuilder beanDefinitionBuilder = BeanDefinitionBuilder.genericBeanDefinition(User.class);
         beanDefinitionBuilder.addPropertyValue("name", "Akane").addPropertyValue("bio", "bio");
 
         // 判断如果 BeanName 参数存在时
-        if (StringUtils.hasText(beanName)){
+        if (StringUtils.hasText(beanName)) {
             // 命名方式
             registry.registerBeanDefinition(beanName, beanDefinitionBuilder.getBeanDefinition());
-        }else {
+        } else {
             // 非命名方式
             BeanDefinitionReaderUtils.registerWithGeneratedName(beanDefinitionBuilder.getBeanDefinition(), registry);
         }
     }
 
-    public static void registerBeanDefinition(BeanDefinitionRegistry registry){
+    public static void registerBeanDefinition(BeanDefinitionRegistry registry) {
         registerBeanDefinition(registry, null);
     }
 
     // 2. 通过@Component方式
     // 定义当前类作为 Spring Bean (组件)
     @Component
-    public static class Config{
+    public static class Config {
         // 1. 通过@Bean 方式定义
+
         /**
          * 通过注解的方式
+         *
          * @return
          */
         @Bean(name = {"user", "akane-user"})
-        public User user(){
+        public User user() {
             User user = new User();
             user.setName("Annotation");
             user.setBio("desc");

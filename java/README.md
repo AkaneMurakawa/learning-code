@@ -1,25 +1,22 @@
-# java-source-note
+# Java source
 
 Java8源码阅读笔记，源码阅读笔记直接记录在[源码](../jdk/src)上。
 
-[ArrayList](#ArrayList)
-
-[LinkedList](#LinkedList)
-
-[HashMap](#HashMap)
-
-[TreeMap](#TreeMap)
+- [ArrayList](#ArrayList)
+- [LinkedList](#LinkedList)
+- [HashMap](#HashMap)
+- [TreeMap](#TreeMap)
 
 
-## 1.1 准备 - 设置IDEA源码路径
-* 点击java-source-note -> File -> Project Structure -> SDKs -> Sourcepath
+## 1 准备
+* 设置IDEA源码路径，IDEA-> File -> Project Structure -> SDKs -> Sourcepath
 * 删除原来的`src`，新增`jdk/src`  
 ![1](images/1.png)
 
 
-## 1.2 总结
+## 2 总结
 
-### 集合
+### 2.1 集合
 1 集合只存放**引用类型**的元素
 
 2 不推荐使用的集合 - by 廖雪峰老师
@@ -34,7 +31,7 @@ Java8源码阅读笔记，源码阅读笔记直接记录在[源码](../jdk/src)�
 > 有童鞋可能觉得使用Iterator访问List的代码比使用索引更复杂。但是，要记住，通过Iterator遍历List永远是最高效的方式。并且，由于Iterator遍历是如此常用，所以，Java的for each循环本身就可以帮我们使用Iterator遍历。
 by 廖雪峰老师
 
-### ArrayList
+### 2.2 ArrayList
 1. 本质上是对数组的封装，数组的偏移和复制用的是{@link System#arraycopy}(C++实现)
 2. 实现了Iterable，采用迭代器模式
 3. 数组的可见内容，其实是依靠单独维护了一个 size 变量表示实际的数据大小。在添加和删除的时候，需要对数组进行偏移
@@ -42,14 +39,14 @@ by 廖雪峰老师
 5. 通过modCount实现快速失败机制(fail-fast)
 6. 自动扩容的时候，有两种方式：一种是扩容为1.5倍，另一种是有一个期望值。最后两个比较得到一个最大的
 
-### LinkedList
+### 2.3 LinkedList
 1. 双向链表，有头节点和尾节点，插入和删除需要注意链表为空的情况
 2. 线程不安全
 3. 迭代器遍历，因为AbstractList里的迭代器只是从头到尾的遍历，而LinkedList是双向链表，因为要实现ListIterator
 4. 查询的时候，其实进行了一次二分，提高了效率。至于为什么不能划分多次，当然是因为只能从头节点开始，或者尾节点开始
 
-### HashMap
-#### 位运算符号知识补充：
+### 2.4 HashMap
+### 2.4.1 位运算符号知识补充
 * ^ 异或 俗称的半加法
 * 左移右移 
     * 左移：相当于 乘 2的n次幂，例如：`1 << 4  = 1 2^4`
@@ -68,7 +65,7 @@ by 廖雪峰老师
 * 当length是2的幂时，`hash % length = hash & (length-1)`
 * 当一个数是2的次方时，`二进制只有一个是1，其他是0`
 
-#### 总结：
+#### 2.4.2 总结
 1. HashMap 底层的数据结构主要是：数组 + 链表 + 红黑树。涉及到红黑树的内容比较难懂，插入、查找、扩容时如果遇到红黑树都够喝一壶了
     * 其中当 (链表的长度 >= 8 && 数组大小 >= 64) 时，链表会转化成红黑树
     * 当红黑树的大小 <= 6 时，红黑树会转化成链表
@@ -84,7 +81,7 @@ by 廖雪峰老师
     * 如果是头插法，会改变链表的上的顺序。在并发时，扩容时会造成环形链或数据丢失
     * 如果是尾插法，在扩容时会保持链表元素原本的顺序，不会出现链表成环的问题。在并发时，可能会覆盖数据
 
-#### 设计思想：
+### 2.4.3 设计思想
 
 **Q: TREEIFY_THRESHOLD = 8的设计思想**
 
@@ -186,14 +183,11 @@ A: 见下面代码注释
     }
 ```
 
-### TreeMap
+### 2.5 TreeMap
 1. HashMap的key是无序的，而TreeMap则是有序树
 2. 通过 compare 来比较 key 的大小，然后利用红黑树左小右大的特性，为每个 key 找到自己的位置，从而维护了 key 的大小排序顺序
-### 1.3 参考
-[Java教程 - 廖雪峰](https://www.liaoxuefeng.com/wiki/1252599548343744)
-
-[java源码分析](https://github.com/stalary/Source-code-analysis)
-
-[面试官系统精讲Java源码及大厂真题](https://github.com/luanqiu/java8)
-
-[一篇文章深入理解JDK8 HashMap](https://itlemon.blog.csdn.net/article/details/104271481)
+## 参考
+- [Java教程 - 廖雪峰](https://www.liaoxuefeng.com/wiki/1252599548343744)
+- [java源码分析](https://github.com/stalary/Source-code-analysis)
+- [面试官系统精讲Java源码及大厂真题](https://github.com/luanqiu/java8)
+- [一篇文章深入理解JDK8 HashMap](https://itlemon.blog.csdn.net/article/details/104271481)

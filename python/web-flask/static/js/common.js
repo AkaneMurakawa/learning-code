@@ -1,7 +1,7 @@
 new Vue({
     el: '#app',
-    data: function() {
-      return {
+    data: function () {
+        return {
             noteList: [{
                 id: null,
                 title: '',
@@ -9,18 +9,18 @@ new Vue({
                 create_time: '',
                 username: ''
             }],
-            note : {
+            note: {
                 title: '',
                 content: '',
                 create_time: '',
             }
-      }
+        }
     },
-    created: function() {
+    created: function () {
         this.search();
     },
     methods: {
-        search: function() {
+        search: function () {
             var vm = this;
             $.ajax({
                 url: "/note/list",
@@ -36,20 +36,20 @@ new Vue({
         login: function () {
             var username = prompt("请输入用户名", "");
             // 验证登录，模拟认证
-            if (username){
-                window.location.href="/note/index"
+            if (username) {
+                window.location.href = "/note/index"
             }
         },
-        add: function(){
+        add: function () {
             var vm = this;
-             $.ajax({
+            $.ajax({
                 url: "/note/add",
                 type: "GET",
                 data: vm.note,
                 success: function (result) {
                     if (result) {
-                       alert(result.message);
-                       vm.search();
+                        alert(result.message);
+                        vm.search();
                     }
                 }
             });
@@ -57,7 +57,7 @@ new Vue({
         detail: function (index) {
             var vm = this;
             var id = vm.noteList[index].id;
-            window.location.href="/note/detail/" + id;
+            window.location.href = "/note/detail/" + id;
         },
         deleteNote: function (index) {
             var vm = this;

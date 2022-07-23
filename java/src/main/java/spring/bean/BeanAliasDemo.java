@@ -17,9 +17,10 @@ public class BeanAliasDemo {
 
     /**
      * 通过别名获取 Bean
+     *
      * @param beanFactory
      */
-    private static void lookup(BeanFactory beanFactory){
+    private static void lookup(BeanFactory beanFactory) {
         User user1 = beanFactory.getBean("user", User.class);
         User user2 = beanFactory.getBean("akane-user", User.class);
         System.out.println(user1.toString());

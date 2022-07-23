@@ -1,4 +1,4 @@
-## 一、SQLAlchemy
+## SQLAlchemy
 ```python
 # 配置连接参数
 class Config(object):

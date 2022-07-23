@@ -26,6 +26,7 @@ public class DependencyInjectionDemo {
      * 结论：
      * 1、BeanFactory 是 Spring 底层 IoC 容器
      * 2、ApplicationContext是BeanFactory的子接口，但是其提供了更多了特性。
+     *
      * @param beanFactory
      */
     private static void beanFactoryAndApplicationContext(BeanFactory beanFactory) {
@@ -42,14 +43,15 @@ public class DependencyInjectionDemo {
 
 
         // false
-        System.out.println("BeanFactory 和 ApplicationContext: "+ (userRepository.getBeanFactory() == beanFactory));
+        System.out.println("BeanFactory 和 ApplicationContext: " + (userRepository.getBeanFactory() == beanFactory));
         // true
-        System.out.println("BeanFactory 和 ApplicationContext: "+ (userRepository.getObjectFactory().getObject() == beanFactory));
+        System.out.println("BeanFactory 和 ApplicationContext: " + (userRepository.getObjectFactory().getObject() == beanFactory));
     }
 
 
     /**
      * 依赖查找 和 依赖注入
+     *
      * @param beanFactory
      */
     private static void dependencyInjectionAndDependencyLookup(BeanFactory beanFactory) {
@@ -64,6 +66,7 @@ public class DependencyInjectionDemo {
 
     /**
      * 依赖来源
+     *
      * @param beanFactory
      */
     private static void dependencySource(BeanFactory beanFactory) {

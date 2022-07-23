@@ -27,10 +27,11 @@ public class AnnotationApplicationContextAsIoCContainerDemo {
 
     /**
      * 通过注解的方式
+     *
      * @return
      */
     @Bean
-    public User user(){
+    public User user() {
         User user = new User();
         user.setName("Annotation");
         user.setBio("desc");
@@ -44,7 +45,7 @@ public class AnnotationApplicationContextAsIoCContainerDemo {
      */
     private static void lookupByCollecionType(BeanFactory beanFactory) {
         if (beanFactory instanceof ListableBeanFactory) {
-            ListableBeanFactory listableBeanFactory = (ListableBeanFactory)beanFactory;
+            ListableBeanFactory listableBeanFactory = (ListableBeanFactory) beanFactory;
             Map<String, User> users = listableBeanFactory.getBeansOfType(User.class);
             System.out.println("集合类型查找:" + users);
         }

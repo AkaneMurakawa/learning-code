@@ -7,6 +7,7 @@ import org.apache.ibatis.jdbc.SQL;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
+
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -19,7 +20,7 @@ public class SqlSessionFactoryDemo {
      */
     SqlSessionFactory sqlSessionFactory;
 
-    public static void main(String[] args)throws Exception {
+    public static void main(String[] args) throws Exception {
         SqlSessionFactoryDemo demo = new SqlSessionFactoryDemo();
 //        demo.sqlSessionScope();
         demo.sqlSessionEnviroment();
@@ -27,9 +28,10 @@ public class SqlSessionFactoryDemo {
 
     /**
      * Configuration -> SqlSessionFactory -> SqlSession -> Mapper -> excutor -> JDBC
+     *
      * @throws IOException
      */
-    public void sqlSession()throws IOException{
+    public void sqlSession() throws IOException {
         // Mybatis的Resources工具类
         InputStream inputStream = Resources.getResourceAsStream("mybatis-config.xml");
 
@@ -43,15 +45,16 @@ public class SqlSessionFactoryDemo {
         // 获取SqlSession工厂
         sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
         SqlSession sqlSession = sqlSessionFactory.openSession();
-        User o = (User)sqlSession.selectOne("mybatis.mybatis.mapper.UserMapper.selectOne", 6001);
+        User o = (User) sqlSession.selectOne("mybatis.mybatis.mapper.UserMapper.selectOne", 6001);
         System.out.println(o.toString());
     }
 
     /**
      * sqlSession.getMapper测试
+     *
      * @throws IOException
      */
-    public void sqlSessionMapper()throws IOException{
+    public void sqlSessionMapper() throws IOException {
         // Mybatis的Resources工具类
         InputStream inputStream = Resources.getResourceAsStream("mybatis-config.xml");
         // 获取SqlSession工厂
@@ -63,9 +66,10 @@ public class SqlSessionFactoryDemo {
 
     /**
      * sqlSessionScope作用域
+     *
      * @throws IOException
      */
-    public void sqlSessionScope()throws IOException{
+    public void sqlSessionScope() throws IOException {
         // Mybatis的Resources工具类
         InputStream inputStream = Resources.getResourceAsStream("mybatis-config.xml");
         // 获取SqlSession工厂
@@ -74,27 +78,27 @@ public class SqlSessionFactoryDemo {
          * 每个线程都应该有它自己的 SqlSession 实例。
          * SqlSession 的实例不是线程安全的，因此是不能被共享的，所以它的最佳的作用域是请求或方法作用域。
          */
-        try(SqlSession sqlSession = sqlSessionFactory.openSession()){
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
             UserMapper mapper = sqlSession.getMapper(UserMapper.class);
             System.out.println(mapper.selectOne(6001));
         }
 
     }
 
-    public void sqlSessionEnviroment()throws IOException{
+    public void sqlSessionEnviroment() throws IOException {
         // Mybatis的Resources工具类
         InputStream inputStream = Resources.getResourceAsStream("mybatis-config.xml");
         // 获取SqlSession工厂，设置environment
         sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream, "development");
 
-        try(SqlSession sqlSession = sqlSessionFactory.openSession()){
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
             UserMapper mapper = sqlSession.getMapper(UserMapper.class);
             System.out.println(mapper.selectOne(6001));
         }
     }
 
     private String selectPersonSql() {
-        return new SQL(){{
+        return new SQL() {{
             SELECT("P.ID, P.USERNAME, P.PASSWORD, P.FULL_NAME");
             SELECT("P.LAST_NAME, P.CREATED_ON, P.UPDATED_ON");
             FROM("PERSON P");

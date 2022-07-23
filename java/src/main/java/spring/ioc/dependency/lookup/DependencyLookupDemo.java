@@ -41,8 +41,8 @@ public class DependencyLookupDemo {
      */
     private static void lookupByAnnotation(BeanFactory beanFactory) {
         if (beanFactory instanceof ListableBeanFactory) {
-            ListableBeanFactory listableBeanFactory = (ListableBeanFactory)beanFactory;
-            Map<String, User> users = (Map)listableBeanFactory.getBeansWithAnnotation(Super.class);
+            ListableBeanFactory listableBeanFactory = (ListableBeanFactory) beanFactory;
+            Map<String, User> users = (Map) listableBeanFactory.getBeansWithAnnotation(Super.class);
             System.out.println("注解查找:" + users);
         }
     }
@@ -54,7 +54,7 @@ public class DependencyLookupDemo {
      */
     private static void lookupByCollecionType(BeanFactory beanFactory) {
         if (beanFactory instanceof ListableBeanFactory) {
-            ListableBeanFactory listableBeanFactory = (ListableBeanFactory)beanFactory;
+            ListableBeanFactory listableBeanFactory = (ListableBeanFactory) beanFactory;
             Map<String, User> users = listableBeanFactory.getBeansOfType(User.class);
             System.out.println("集合类型查找:" + users);
         }
@@ -63,28 +63,31 @@ public class DependencyLookupDemo {
     /**
      * 根据单个类型查找
      * 泛型
+     *
      * @param beanFactory
      */
-    private static void lookupByType(BeanFactory beanFactory){
-        User user = (User)beanFactory.getBean(User.class);
+    private static void lookupByType(BeanFactory beanFactory) {
+        User user = (User) beanFactory.getBean(User.class);
         System.out.println("单个类型查找:" + user.toString());
     }
 
     /**
      * 实时查找
+     *
      * @param beanFactory
      */
-    private static void lookupRealTime(BeanFactory beanFactory){
-        User user = (User)beanFactory.getBean("user");
+    private static void lookupRealTime(BeanFactory beanFactory) {
+        User user = (User) beanFactory.getBean("user");
         System.out.println("实时查找:" + user.toString());
     }
 
     /**
      * 延迟查找
+     *
      * @param beanFactory
      */
-    private static void lookupInLazy(BeanFactory beanFactory){
-        ObjectFactory<User> objectFactory = (ObjectFactory)beanFactory.getBean("objectFactory");
+    private static void lookupInLazy(BeanFactory beanFactory) {
+        ObjectFactory<User> objectFactory = (ObjectFactory) beanFactory.getBean("objectFactory");
         User user = objectFactory.getObject();
         System.out.println("延迟查找:" + user.toString());
     }

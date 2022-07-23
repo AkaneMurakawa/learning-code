@@ -1,6 +1,7 @@
 package thread.other;
 
 import org.openjdk.jol.info.ClassLayout;
+
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -8,7 +9,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class JavaObjectLayoutDemo {
 
-    public static void main(String[] args) throws InterruptedException{
+    public static void main(String[] args) throws InterruptedException {
         final A a = new A();
         System.out.println("****hashCode");
 
@@ -20,10 +21,10 @@ public class JavaObjectLayoutDemo {
         System.out.println(layout.toPrintable());// 01, 无锁可偏向，00000 0 01
 
         Thread t = new Thread(() -> {
-            synchronized (a){
+            synchronized (a) {
                 try {
                     TimeUnit.SECONDS.sleep(10);
-                }catch (InterruptedException e){
+                } catch (InterruptedException e) {
                     return;
                 }
             }
@@ -38,7 +39,7 @@ public class JavaObjectLayoutDemo {
         System.out.println(layout.toPrintable());// 00, 轻量级锁，11110 0 00
 
         // 默认自旋10次，10次后未获取到锁，升级为重量级锁（系统锁），进入等待队列
-        synchronized (a){
+        synchronized (a) {
             System.out.println("****With the lock");
             System.out.println(layout.toPrintable());// 10, 重量级锁，01010 0 10
         }
@@ -55,6 +56,6 @@ public class JavaObjectLayoutDemo {
 }
 
 
-class A{
+class A {
 
 }

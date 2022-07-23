@@ -38,32 +38,35 @@ public class PrepareInterceptor implements Interceptor {
             //插入sql中指定字段，主键tid设置为全球唯一字段
             if (SqlCommandType.INSERT.equals(sqlCommandType)) {
                 //批量插入
-                if(object instanceof StrictMap) {
-                    StrictMap<Object> objs = (StrictMap<Object>)object;
+                if (object instanceof StrictMap) {
+                    StrictMap<Object> objs = (StrictMap<Object>) object;
                     Object collection = objs.get("collection");
-                    if(collection instanceof Collection) {
-                        Collection<Object> c = (Collection<Object>)collection;
+                    if (collection instanceof Collection) {
+                        Collection<Object> c = (Collection<Object>) collection;
                         Iterator<Object> it = c.iterator();
                         while (it.hasNext()) {
                             Object o = it.next();
                             reflectTid(o);
                         }
                     }
-                }else {
+                } else {
                     //单条插入
 
                     //获取方法路径
                     String id = mappedStatement.getId();
-                    if (!WHITE_LIST.contains(id)){
+                    if (!WHITE_LIST.contains(id)) {
                         reflectTid(object);
                     }
                 }
-            } else if (SqlCommandType.UPDATE.equals(sqlCommandType)) {}
+            } else if (SqlCommandType.UPDATE.equals(sqlCommandType)) {
+            }
         }
         return invocation.proceed();
     }
+
     /**
      * 反射注入id
+     *
      * @param object
      * @throws NoSuchFieldException
      * @throws IllegalAccessException

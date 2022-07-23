@@ -28,6 +28,7 @@ public interface UserMapper {
      */
     /**
      * 映射器注解，复杂的再用XML
+     *
      * @param userId
      * @return
      */

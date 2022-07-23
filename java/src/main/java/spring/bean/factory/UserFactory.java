@@ -8,7 +8,7 @@ import base.User;
  */
 public class UserFactory {
 
-    public User createUser(){
+    public User createUser() {
         User user = new User();
         user.setName("Akane Factory");
         return user;
