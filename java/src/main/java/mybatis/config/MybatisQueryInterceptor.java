@@ -18,7 +18,6 @@ import java.util.Set;
 /**
  * mybatis 查询拦截器
  */
-@Slf4j
 @Component
 @Intercepts({@Signature(type = StatementHandler.class, method = "prepare", args = {Connection.class, Integer.class})})
 public class MybatisQueryInterceptor implements Interceptor {
