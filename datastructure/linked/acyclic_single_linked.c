@@ -119,7 +119,7 @@ bool insert(struct Linked_t *head, int index, int data)
 /*
  * 指定位置删除
  * @param index 插入位置，从0开始
- * @param delete_data 返回插入的值
+ * @param delete_data 返回删除的值
  */
 bool delete(struct Linked_t *head, int index, int *delete_data)
 {
