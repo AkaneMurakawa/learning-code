@@ -16,7 +16,7 @@ typedef struct Stack_t
 } Stack_t;
 
 /* 是否为空 */
-bool isEmpty(struct Stack_t *stack)
+bool is_empty(struct Stack_t *stack)
 {
     return stack->top == stack->button;
 }
@@ -24,7 +24,7 @@ bool isEmpty(struct Stack_t *stack)
 /* 初始化 */
 void init(struct Stack_t *stack)
 {
-    stack->top = malloc(sizeof(struct Stack_t));
+    stack->top = malloc(sizeof(struct Node_t));
     if (NULL == stack->top)
     {
         printf("stack initial fail\n");
@@ -59,7 +59,7 @@ bool push(struct Stack_t *stack, int data)
  */
 bool pop(struct Stack_t *stack, int *delete_data)
 {
-    if (isEmpty(stack))
+    if (is_empty(stack))
     {
         return false;
     }
@@ -75,7 +75,7 @@ bool pop(struct Stack_t *stack, int *delete_data)
 /* 打印栈 */
 void traverse(struct Stack_t *stack)
 {
-    if (isEmpty(stack))
+    if (is_empty(stack))
     {
         return;
     }
@@ -91,7 +91,7 @@ void traverse(struct Stack_t *stack)
 /* 清除栈 */
 void clear(struct Stack_t *stack)
 {
-    if (isEmpty(stack))
+    if (is_empty(stack))
     {
         return;
     }

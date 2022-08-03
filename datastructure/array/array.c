@@ -25,7 +25,7 @@ bool check_length(struct Array_t *array)
 /* 初始化 */
 void init(struct Array_t *array, int length)
 {
-    array->addr = malloc(sizeof(struct Array_t));
+    array->addr = malloc(sizeof(int) * length);
     if (NULL == array->addr)
     {
         printf("array initial fail\n");

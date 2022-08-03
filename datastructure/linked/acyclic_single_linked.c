@@ -10,7 +10,7 @@ typedef struct Linked_t
 } Linked_t;
 
 /* 是否为空 */
-bool isEmpty(struct Linked_t *head)
+bool is_empty(struct Linked_t *head)
 {
     return NULL == head->next;
 }
@@ -18,7 +18,7 @@ bool isEmpty(struct Linked_t *head)
 /* 链表长度 */
 int length(struct Linked_t *head)
 {
-    if (isEmpty(head))
+    if (is_empty(head))
     {
         return 0;
     }
@@ -66,7 +66,7 @@ bool insert_to_head(struct Linked_t *head, int data)
     }
     node->data = data;
     node->next = NULL;
-    if (isEmpty(head))
+    if (is_empty(head))
     {
         head->next = node;
     }
@@ -160,7 +160,7 @@ bool delete(struct Linked_t *head, int index, int *delete_data)
 /* 冒泡排序 asc */
 void sort(struct Linked_t *head)
 {
-    if (isEmpty(head))
+    if (is_empty(head))
     {
         return;
     }
@@ -187,7 +187,7 @@ void sort(struct Linked_t *head)
 /* 打印链表 */
 void traverse(struct Linked_t *head)
 {
-    if (isEmpty(head))
+    if (is_empty(head))
     {
         return;
     }
@@ -203,7 +203,7 @@ void traverse(struct Linked_t *head)
 /* 反转链表 */
 void reversed(struct Linked_t *head)
 {
-    if (isEmpty(head))
+    if (is_empty(head))
     {
         return;
     }
