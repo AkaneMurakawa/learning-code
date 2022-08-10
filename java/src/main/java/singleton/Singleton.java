@@ -1,16 +1,17 @@
 package singleton;
 
-// 双重检查(同步代码块)
-class Singleton {
+/**
+ * 双重检查(同步代码块)
+ */
+public class Singleton {
 
-    // 1.私有化构造方法
+    // 私有化构造方法
     private Singleton() {
     }
 
     // volatile保证内存可见性，防止指令重排
     private static volatile Singleton instance;
 
-    // 2.获取
     public static Singleton getInstance() {
         if (instance == null) {
             synchronized (Singleton.class) {
@@ -21,5 +22,4 @@ class Singleton {
         }
         return instance;
     }
-
 }

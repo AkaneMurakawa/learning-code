@@ -1,12 +1,33 @@
 package tmp;
 
+import org.springframework.util.CollectionUtils;
+
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
 public class Test {
     public static void main(String[] args) {
-        StringBuffer sb = new StringBuffer("20180918");
-        sb.insert(6,"-");
-        sb.insert(4,"-");
-        sb.insert(0,"-");
+        List<String> list = new ArrayList<>();
+        list.add("1");
+        list.add("2");
+        list.add("2");
+        list.add("3");
+        list.add("3");
 
-        System.out.println(sb.toString());
+        List<String> deduplication = getDuplication(list, v -> v);
+        deduplication.forEach(System.out::println);
+    }
+
+    /**
+     * 根据条件获取重复数据
+     */
+    public static <T, U extends Comparable<U>> List<U> getDuplication(List<T> list, Function<T, U> function) {
+        if (CollectionUtils.isEmpty(list)) {
+            return new ArrayList<>();
+        }
+        return list.stream().collect(Collectors.groupingBy(function, Collectors.counting()))
+                .entrySet().stream().filter(e -> e.getValue() > 1)
+                .map(Map.Entry::getKey).collect(Collectors.toList());
     }
 }
