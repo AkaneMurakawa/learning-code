@@ -1,5 +1,8 @@
 package sort;
 
+import java.util.Arrays;
+import java.util.LinkedList;
+
 /**
  * 排序
  * 默认实现为升序asc
@@ -14,7 +17,12 @@ public class Sorters {
         //Sorters.selectionSort(arrays);
         //Sorters.heapSort(arrays);
         //Sorters.bubbleSort(arrays);
-        Sorters.quickSort(arrays, 0, arrays.length - 1);
+        //Sorters.quickSort(arrays, 0, arrays.length - 1);
+        //Sorters.mergeSort(arrays,0 ,  arrays.length - 1, new int[4]);
+        //Sorters.countingSort(arrays, 10);
+        //Sorters.radixSort(arrays, 10, 2);
+        //Sorters.bucketSort(arrays, 10, 1);
+
         for (int value : arrays) {
             System.out.print(value);
             System.out.print("\t");
@@ -149,14 +157,16 @@ public class Sorters {
      * 每一个父节点又可以看成是其子树分支的根节点。
      * 2*i、2*i+1、2*i+2
      * 0 1 2
+     * @param parent 父节点下标
+     * @param last 数组最大下标
      */
-    private static void minHeapFixDown(int[] arrays, int parent, int length) {
+    private static void minHeapFixDown(int[] arrays, int parent, int last) {
         // 获得左子节点
         int child = 2 * parent + 1;
         // 保存当前父节点
         int tmp = arrays[parent];
-        while (child < length) {
-            boolean hasRight = child + 1 < length;
+        while (child < last) {
+            boolean hasRight = child + 1 < last;
             // 如果有右子节点，child+1为右子节点，并且右子节点大与左子节点,则选取右子节点
             // >:asc, <:desc
             if (hasRight && arrays[child + 1] > arrays[child]) {
@@ -241,6 +251,8 @@ public class Sorters {
      * 快速排序
      * 描述：先从数列中取出一个数作为key值(通常选择第一个元素或者最后一个元素)，
      * 将比这个数小的数全部放在它的左边，大于或等于它的数全部放在它的右边，对左右两个小数列重复第二步，直至各区间只有1个数。
+     * @param low 最低位下标
+     * @param high 最高位下标
      */
     public static void quickSort(int[] arrays, int low, int high) {
         // 如果最低位的下标>=最高位的下标
@@ -276,5 +288,222 @@ public class Sorters {
         quickSort(arrays, left + 1, high);
     }
 
+    /**
+     * 二路归并排序
+     * 将arrays[first...middle]和arrays[middle+1...end]合并
+     * 例如：A[] 和 B[] 合并成C[]
+     * @param first 开始下标
+     * @param middle 中间下标
+     * @param last 结束下标
+     * @param tmp 临时存储合并数组
+     */
+    private static void mergeArray(int arrays[], int first, int middle, int last, int tmp[]) {
+        // A[]开始下标
+        int i = first;
+        int m = middle;
+        // B[]开始下标
+        int j = middle + 1;
+        int n = last;
+        // C[]开始下标,这里为tmp[]
+        int k = 0;
+        while (i <= m && j <= n) {
+            // 判断谁小，然后放入，k++，i/j++
+            // >:asc, <:desc
+            if (arrays[j] > arrays[i]) {
+                tmp[k] = arrays[i];
+                k++;
+                i++;
+            } else {
+                tmp[k] = arrays[j];
+                k++;
+                j++;
+            }
+        }
+        // 如果B[]已经分配完，而A[]没有分完，那剩下的就都是A直接放入到C[]中
+        while (i <= m) {
+            tmp[k] = arrays[i];
+            k++;
+            i++;
+        }
+        // 如果A[]已经分配完，而B[]没有分完，那剩下的就都是B直接放入到C[]中
+        while (j <= n) {
+            tmp[k] = arrays[j];
+            k++;
+            j++;
+        }
 
+        // 将tmp[]的值赋给arrays[]，这样arrays[]得到的就是排序好的
+        for (i = 0; i < k; i++) {
+            arrays[first + i] = tmp[i];
+        }
+    }
+
+    /**
+     * 二路归并排序
+     * 描述：归并排序属于比较类非线性时间排序，号称比较类排序中性能最佳者，在数据中应用中较广。
+     * 归并排序是分治法(Divide and Conquer)的一个典型的应用。将已有序的子序列合并，得到完全有序的序列。
+     * 即先使每个子序列有序，再使子序列段间有序。若将两个有序表合并成一个有序表，称为二路归并。
+     * @param first 开始下标
+     * @param last 结束下标
+     * @param tmp 临时存储合并数组
+     */
+    public static void mergeSort(int[] arrays, int first, int last, int tmp[]) {
+        if (first < last) {
+            int middle = (first + last) >> 1;
+            // 左半部分排好序
+            mergeSort(arrays, first, middle, tmp);
+            // 右半部分排好序
+            mergeSort(arrays, middle + 1, last, tmp);
+            //合并左右部分
+            mergeArray(arrays, first, middle, last, tmp);
+        }
+    }
+
+    /**
+     * 计数排序
+     * 描述：在待排序序列中，对于给定的输入序列中的每一个元素x，确定该序列中值小于x的元素的个数
+     * (此处并非比较各元素的大小，而是通过对元素值的计数和计数值的累加来确定)，这样就知道了该元素的正确位置。
+     * 例如，对于待排序序列{10,5,3,1,9,3}，有5个数比10小，那么10就应该放在第6个位置。
+     * @param max    待排序数组中最大的数
+     */
+    public static void countingSort(int[] arrays, int max) {
+        // 保留结果
+        int[] result = new int[arrays.length];
+        // 初始化数组，默认元素为0
+        int[] tmp = new int[max + 1];
+
+        for (int i = 0; i < arrays.length; i++) {
+            // 遍历待排序的数组，计算其中的每一个元素出现的次数，比如一个key为i的元素出现了3次，那么A[i]=3
+            int value = arrays[i];
+            //tmp[]初始化为0，之后1，2...
+            tmp[value] += 1;
+        }
+
+        // 对所有计数累加
+        for (int i = 1; i < tmp.length; i++) {
+            tmp[i] += tmp[i - 1];
+        }
+
+        // 逆向遍历源数组（保证稳定性），根据计数数组中对应的值填充到先的数组中
+        for (int i = arrays.length - 1; i >= 0; i--) {
+            // 记录原数组的每一个数
+            int value = arrays[i];
+            // 由于下标从0开始，所以这里减1
+            int position = tmp[value] - 1;
+            // 放入适当的位置
+            result[position] = value;
+            // 放了一个就减一个
+            tmp[value] -= 1;
+        }
+
+        // 将结果赋给arrays数组
+        for (int i = 0; i < arrays.length; i++) {
+            arrays[i] = result[i];
+        }
+    }
+
+    /**
+     * 基数排序
+     * 描述：
+     * 1. 首先根据个位数的数值，将它们分配至编号0到9的桶子中接下来将这些桶子中的数值按顺序重新串接起来
+     * 2. 根据十位数的数值，将它们分配至编号0到9的桶子中接下来将这些桶子中的数值按顺序重新串接起来，以此类推...直到最高位结束。
+     * 3. 根据最高位数的数值，将它们分配至编号0到9的桶子中，得到排序。
+     * @param arrays   待排序数组
+     * @param radix    基数 10 (任何一个阿拉伯数，它的各个位数上的基数都是以0~9来表示的。所以我们不妨把0~9视为10个桶)
+     * @param distance 待排序中的数最大的位数
+     */
+    public static void radixSort(int[] arrays, int radix, int distance) {
+        int length = arrays.length;
+        // 临时数组，用来暂存元素
+        int[] tmp = new int[length];
+        // radix: 10 用于计数排序 盒子 0~9
+        int[] count = new int[radix];
+        // 1  10 100
+        int divide = 1;
+
+        for (int i = 0; i < distance; i++) {
+            System.arraycopy(arrays, 0, tmp, 0, length);
+            // 盒子清空
+            Arrays.fill(count, 0);
+
+            // 用来把每个数的 <个十百千万...> 分开，并且使相对应号数的桶的个数增加1
+            for (int j = 0; j < length; j++) {
+                // divide：1 10 100
+                // radix： 基数 10
+                // 取出每一个数的位。例如123：divide:1时，取出 3。divide:10时，取出2
+                int tmpKey = (tmp[j] / divide) % radix;
+                // 盒子中的<个 十 百...>的个数
+                count[tmpKey]++;
+            }
+
+            // 对所有计数累加
+            // radix：基数 10
+            for (int j = 1; j < radix; j++) {
+                count[j] += count[j - 1];
+            }
+            // 逆向遍历源数组（保证稳定性），根据计数数组中对应的值填充到先的数组中
+            for (int j = length - 1; j >= 0; j--) {
+                int tmpKey = (tmp[j] / divide) % radix;
+                // 由于下标从0开始，所以这里减1
+                count[tmpKey]--;
+                arrays[count[tmpKey]] = tmp[j];
+            }
+
+            // (tmp[j]/divide) % radix
+            // divide：1 10 100,通过distance控制
+            divide = divide * radix;
+        }
+    }
+
+    /**
+     * 桶排序(BucketSort)
+     * 描述：桶排序，顾名思义就是运用桶的思想来将数据放到相应的桶内，再将每一个桶内的数据进行排序，
+     * 最后把所有桶内数据按照顺序取出来，得到的就是我们需要的有序数据。
+     * @param arrays 待排序数组
+     * @param max    最大的数
+     * @param min    最小的数
+     */
+    public static void bucketSort(int[] arrays, int max, int min) {
+        // 桶数，比如10个桶
+        int bucketNum = (max - min) / arrays.length + 1;
+        // 创建链表(桶)集合并初始化，集合中的链表用于存放相应的元素
+        // 存桶，桶集合
+        LinkedList<LinkedList<Integer>> buckets = new LinkedList<>();
+        for (int i = 0; i < bucketNum; i++) {
+            // 存元素，桶
+            LinkedList<Integer> bucket = new LinkedList<>();
+            buckets.add(bucket);
+        }
+
+        // 把元素放进相对应的桶中
+        for (int i = 0; i < arrays.length; i++) {
+            // 把元素放进相对应的桶中
+            int index = (arrays[i] - min) / arrays.length;
+            buckets.get(index).add(arrays[i]);
+        }
+
+        // 对每个桶中的元素排序，并放进arrays[]
+        // 用于排序后从每个桶中依次取出，arrays的下标
+        int index = 0;
+        for (LinkedList<Integer> linkedList : buckets) {
+            // 每个桶的长度
+            int size = linkedList.size();
+            if (size == 0) {
+                continue;
+            }
+            int[] tmp = new int[size];
+            for (int i = 0; i < tmp.length; i++) {
+                // 将桶的数取出放进入tmp[]中
+                tmp[i] = linkedList.get(i);
+            }
+            // QAQ 对桶里面的数进行排序，选择一种排序方式
+            Arrays.sort(tmp);
+
+            // 排序后从每个桶中依次取出
+            for (int i = 0; i < tmp.length; i++) {
+                arrays[index] = tmp[i];
+                index++;
+            }
+        }
+    }
 }
