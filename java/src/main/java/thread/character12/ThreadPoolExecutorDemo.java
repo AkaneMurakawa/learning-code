@@ -1,5 +1,7 @@
 package thread.character12;
 
+import org.springframework.scheduling.concurrent.CustomizableThreadFactory;
+
 import java.util.concurrent.*;
 
 /**
@@ -17,9 +19,9 @@ public class ThreadPoolExecutorDemo {
             10,
             10L,
             TimeUnit.MINUTES,
-            new LinkedBlockingDeque<>(50),
-            Executors.defaultThreadFactory(),
-            new ThreadPoolExecutor.AbortPolicy()
+            new ArrayBlockingQueue<>(50),
+            new CustomizableThreadFactory("upload-thread"),
+            new ThreadPoolExecutor.CallerRunsPolicy()
     );
 
     // 默认拒绝处理策略，丢弃任务并抛出RejectedExecutionException异常
