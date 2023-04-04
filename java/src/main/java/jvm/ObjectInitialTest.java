@@ -1,15 +1,14 @@
 package jvm;
 
 /**
- * static加载研究
+ * 对象的创建
  */
-public class StaticLoadingTest {
+public class ObjectInitialTest {
 
     public static void main(String[] args) {
         System.out.println(T.count);
 
     }
-
 }
 
 class T {
@@ -18,7 +17,7 @@ class T {
     //public static int count = 2;
     //public static T t = new T();
 
-    //---1
+    //---1，此时得到的是count默认值0，++后变为1
     //2
     public static T t = new T();
     public static int count = 2;

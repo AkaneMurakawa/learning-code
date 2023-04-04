@@ -11,14 +11,14 @@ class ArthasOOM{
 }
 
 /**
- *
+ * Arthas排除OOM问题测试
  * thread
  * thread 1
  */
-public class ArthasOOMDemo {
+public class ArthasOOMTest {
 
     public static void main(String[] args) {
-        ArthasOOMDemo.run();
+        ArthasOOMTest.run();
     }
 
     static void run(){

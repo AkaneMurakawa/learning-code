@@ -8,13 +8,15 @@ class Arthas{
 }
 
 /**
+ * 测试Arthas的使用
+ *
  * 查看函数返回
- * watch jvm.ArthasDemo.say primeFactors returnObj
+ * watch jvm.Arthas.say primeFactors returnObj
  *
  * 反编译
- * jad jvm.ArthasDemo
+ * jad jvm.Arthas
  */
-public class ArthasDemo {
+public class ArthasTest {
 
     public static void main(String[] args) throws InterruptedException {
         Arthas arthas = new Arthas();

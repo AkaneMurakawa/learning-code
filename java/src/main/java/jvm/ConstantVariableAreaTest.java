@@ -1,9 +1,9 @@
 package jvm;
 
 /**
- * String 存储区域测试
+ * 常量池 存储区域测试
  */
-public class StringAreaTest {
+public class ConstantVariableAreaTest {
 
    //static class Var {
    //    public static final String var0 = "varvarvarvarvarvarvarvarvarvarvarvarvarvarvarvarvarvarvarvarvarvarvarvarvarvarvarvarvarvarvarvarvarvarvarvarvarvarvarvarvar0";
@@ -1019,7 +1019,7 @@ public class StringAreaTest {
         while (true) {
             // 存放在Metaspace
             var0 += i++;
-            Thread.sleep(100);
+            //Thread.sleep(100);
         }
     }
 }

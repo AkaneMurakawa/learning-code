@@ -7,6 +7,11 @@ class MyObject {
     String str = "str";
 }
 
+/**
+ * 对象内存布局、对象头内存布局、markword内存布局
+ * 1. markword
+ * 2. class pointer
+ */
 public class ObjectSize {
 
     public static void main(String[] args) {

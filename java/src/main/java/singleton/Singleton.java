@@ -1,7 +1,7 @@
 package singleton;
 
 /**
- * 双重检查(同步代码块)
+ * DLC双重检查(同步代码块)
  */
 public class Singleton {
 
