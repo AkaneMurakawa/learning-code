@@ -24,6 +24,21 @@ public class ThreadPoolExecutorDemo {
             new ThreadPoolExecutor.CallerRunsPolicy()
     );
 
+    private static final ThreadPoolExecutor pool2 = new ThreadPoolExecutor(
+            5,
+            10,
+            10L,
+            TimeUnit.MINUTES,
+            new ArrayBlockingQueue<>(50),
+            r -> {
+            Thread t = new Thread(r);
+                t.setName("com.alibaba.nacos.client.remote.worker");
+                t.setDaemon(true);
+                return t;
+            },
+            new ThreadPoolExecutor.CallerRunsPolicy()
+    );
+
     // 默认拒绝处理策略，丢弃任务并抛出RejectedExecutionException异常
     RejectedExecutionHandler abortPolicy = new ThreadPoolExecutor.AbortPolicy();
     // 由调用线程处理该任务
