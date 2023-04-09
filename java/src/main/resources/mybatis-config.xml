@@ -31,7 +31,6 @@
         <typeHandler handler="mybatis.mybatis.config.ExampleTypeHandler"/>
     </typeHandlers>
 
-
     <!-- mybatis-config.xml -->
     <plugins>
         <plugin interceptor="mybatis.mybatis.config.ExamplePlugin">

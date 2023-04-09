@@ -22,7 +22,7 @@ public class TransferProblemTest {
     }
 
     static void test(User user) {
-        user.name = "改变";
+        user.setName("改变");
         user = new User("引用改变了？", "并没有");
     }
 

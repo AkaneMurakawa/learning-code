@@ -1,3 +1,5 @@
+package id;
+
 /**
  * Twitter雪花算法snowflake
  *

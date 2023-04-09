@@ -1,5 +1,4 @@
-package main.java;
-
+package java8;
 
 @MyAnnotation("1")
 @MyAnnotation("2")

@@ -1,4 +1,4 @@
-package main.java;
+package java8;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

@@ -1,6 +1,5 @@
-package model;
+package lombok;
 
-import lombok.*;
 import lombok.experimental.Accessors;
 import lombok.experimental.Tolerate;
 
@@ -19,7 +18,7 @@ import lombok.experimental.Tolerate;
 @Accessors(chain = true)
 @Builder
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class User {
+public class LombokModel {
 
     /**
      * 自动生成set和get方法
@@ -39,6 +38,6 @@ public class User {
      * 用于解决@Data @Builder的冲突
      */
     @Tolerate
-    public User() {
+    public LombokModel() {
     }
 }

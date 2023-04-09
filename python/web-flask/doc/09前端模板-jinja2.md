@@ -71,5 +71,3 @@ def list_step_3(li):
 使用
 {% m_input.input() %}
 ```
-
-## flash

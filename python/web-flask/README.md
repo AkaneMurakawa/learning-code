@@ -28,7 +28,7 @@
 * PyCharm 2020.1 (Professional Edition)
 * Postman
 
-## 说明
+## 运行
 数据库执行脚本
 ```text
 sql_script
@@ -45,6 +45,8 @@ pip install -i https://pypi.tuna.tsinghua.edu.cn/simple some-package
 ```text
 python -m pip install --upgrade pip
 ```
+
+## 问题
 **error: Microsoft Visual C++ 14.0 is required. Get it with "Microsoft Visual C++ Build Tools"**
 
 解决方案：
