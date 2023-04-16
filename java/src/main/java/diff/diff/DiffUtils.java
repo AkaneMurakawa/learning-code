@@ -1,13 +1,10 @@
 package diff.diff;
 
+import diff.diff.converters.Converter;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.builder.Diff;
-import org.apache.commons.lang3.builder.DiffBuilder;
-import org.apache.commons.lang3.builder.DiffResult;
-import org.apache.commons.lang3.builder.ToStringStyle;
-import org.springframework.util.CollectionUtils;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.*;
 import java.util.function.Function;
 
@@ -16,112 +13,88 @@ import java.util.function.Function;
  */
 public class DiffUtils {
 
-    private static final String DEFAULT_SEPARATOR = ",";
+    public static final String DEFAULT_SEPARATOR = ",";
 
     /**
      * 对比
-     * @param source
-     * @param target
-     * @return
      */
-    public static String diff(Object source, Object target){
+    public static String diff(Object source, Object target) {
         return diff(source, target, DiffUtils::defaultFormat, DEFAULT_SEPARATOR);
     }
 
     /**
      * 对比
-     * @param source
-     * @param target
-     * @param format
-     * @param separator
-     * @return
      */
     public static String diff(Object source, Object target,
-                              Function<Diff, String> format,
-                              String separator){
+                              Function<DiffRow, String> format,
+                              String separator) {
         if (Objects.isNull(source) && Objects.isNull(target)) {
             throw new IllegalArgumentException("source target");
         }
 
         StringBuilder sb = new StringBuilder();
-        // add
-        if (Objects.isNull(source)){
-            List<DiffRow> diffRows = getDiffRows(source, target);
-            for (int i = 0; i < diffRows.size(); i++) {
-                DiffRow diffRow = diffRows.get(i);
-                sb.append(String.format("[%s：%s]", diffRow.getFieldName(), DiffUtils.format(diffRow.getRhs())));
-                if (i != diffRows.size() - 1){
-                    sb.append(separator);
-                }
+        List<DiffRow> diffRows = getDiffRows(source, target);
+        for (int i = 0; i < diffRows.size(); i++) {
+            DiffRow diffRow = diffRows.get(i);
+            String s = format.apply(diffRow);
+            // 跳过EQUAL
+            if (StringUtils.isBlank(s)){
+                continue;
             }
-            return sb.toString();
-        }
-        // delete
-        if (Objects.isNull(target)){
-            List<DiffRow> diffRows = getDiffRows(source, target);
-            for (int i = 0; i < diffRows.size(); i++) {
-                DiffRow diffRow = diffRows.get(i);
-                sb.append(String.format("[%s：%s]", diffRow.getFieldName(), DiffUtils.format(diffRow.getLhs())));
-                if (i != diffRows.size() - 1){
-                    sb.append(separator);
-                }
-            }
-            return sb.toString();
-        }
-
-        DiffResult diff = DiffUtils.diffBuilder(source, target);
-        List<Diff<?>> diffs = diff.getDiffs();
-        for (int i = 0; i < diffs.size(); i++) {
-            sb.append(format.apply(diffs.get(i)));
-            if (i != diffs.size() - 1){
+            sb.append(s);
+            if (i != diffRows.size() - 1) {
                 sb.append(separator);
             }
         }
         return sb.toString();
     }
 
-    private static String defaultFormat(Diff<?> d){
+    @SneakyThrows
+    private static String defaultFormat(DiffRow diffRow) {
+        if (DiffRow.Tag.EQUAL.is(diffRow.getTag())){
+            return "";
+        }
+        // 转换器
+        Method[] methods = diffRow.getConverter().getDeclaredMethods();
+        Method method = Arrays.stream(methods)
+                .filter(m -> m.getName().equals("convert")).findFirst()
+                .get();
+        Converter<?> converter = diffRow.getConverter().newInstance();
+
+        if (List.class.getTypeName().equals(diffRow.getType().getTypeName())){
+
+            return String.format("[%s：%s]",
+                    diffRow.getFieldName(),
+                    method.invoke(converter, diffRow, null));
+        }
+
         return String.format("[%s：%s -> %s]",
-                d.getFieldName(),
-                DiffUtils.format(d.getLeft()),
-                DiffUtils.format(d.getRight())
-        );
+                diffRow.getFieldName(),
+                method.invoke(converter, diffRow, diffRow.getLeft()),
+                method.invoke(converter, diffRow, diffRow.getRight()));
     }
 
-    private static Object format(Object obj){
-        if (Objects.isNull(obj) || StringUtils.isBlank(obj.toString())) {
-            return "空";
-        }
-        return obj;
-    }
 
     @SneakyThrows
-    private static DiffResult diffBuilder(Object source, Object target) {
-        DiffBuilder diffBuilder = new DiffBuilder(source, target, ToStringStyle.SHORT_PREFIX_STYLE);
-        List<DiffRow> diffRows = getDiffRows(source, target);
-        if (CollectionUtils.isEmpty(diffRows)){
-            return diffBuilder.build();
-        }
-        diffRows.forEach(v -> diffBuilder.append(v.getFieldName(), v.getLhs(), v.getRhs()));
-        return diffBuilder.build();
-    }
-
-    @SneakyThrows
-    private static List<DiffRow> getDiffRows(Object source, Object target){
+    private static List<DiffRow> getDiffRows(Object source, Object target) {
         Class<?> clazz = Objects.nonNull(source) ? source.getClass() : target.getClass();
         Field[] fields = clazz.getDeclaredFields();
         List<DiffRow> diffRows = new ArrayList<>(fields.length);
         for (Field field : fields) {
             DiffNode diffNode = field.getAnnotation(DiffNode.class);
-            if (null == diffNode){
+            if (null == diffNode) {
                 continue;
             }
             int order = diffNode.order();
             field.setAccessible(true);
-            diffRows.add(new DiffRow(diffNode.value(),
-                    Objects.nonNull(source) ? field.get(source) : null,
-                    Objects.nonNull(target) ? field.get(target) : null,
-                    order));
+            diffRows.add(DiffRow.builder()
+                    .fieldName(diffNode.value())
+                    .left(Objects.nonNull(source) ? field.get(source) : null)
+                    .right(Objects.nonNull(target) ? field.get(target) : null)
+                    .type(field.getType())
+                    .converter(diffNode.converter())
+                    .order(order)
+                    .build());
         }
         // sort
         diffRows.sort(Comparator.comparing(DiffRow::getOrder));
