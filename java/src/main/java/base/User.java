@@ -46,10 +46,12 @@ public class User {
         this.bio = bio;
     }
 
+
     @Override
     public String toString() {
-        return "base.User{" +
+        return "User{" +
                 "name='" + name + '\'' +
+                ", age=" + age +
                 ", bio='" + bio + '\'' +
                 '}';
     }
