@@ -2,6 +2,9 @@ package diff.diff.converters;
 
 import diff.diff.DiffRow;
 
+/**
+ * 集合转换器
+ */
 public class ListConverter implements Converter<Object> {
 
     public Object convert(DiffRow diffRow, Object obj) {

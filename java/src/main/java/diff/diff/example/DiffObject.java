@@ -1,6 +1,6 @@
 package diff.diff.example;
 
-import diff.diff.DiffNode;
+import diff.diff.annotation.DiffNode;
 import diff.diff.converters.ListConverter;
 import lombok.Builder;
 import lombok.Data;

@@ -1,5 +1,6 @@
 package diff.diff;
 
+import diff.diff.annotation.DiffNode;
 import diff.diff.converters.Converter;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;

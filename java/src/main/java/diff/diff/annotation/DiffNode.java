@@ -1,4 +1,4 @@
-package diff.diff;
+package diff.diff.annotation;
 
 import diff.diff.converters.AutoConverter;
 import diff.diff.converters.Converter;
